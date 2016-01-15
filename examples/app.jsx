@@ -3,7 +3,9 @@ var ReactDOM = require('react-dom');
 
 var examples = [
 	'basic',
-	'jquery-bootstrap'
+	'jquery-bootstrap',
+	'quadratic',
+	'transitions',
 ];
 
 var Examples = React.createClass({

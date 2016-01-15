@@ -24,7 +24,7 @@ gulp.task('server', function() {
 
 function bundle_file(filepath) {
 	console.log('bundle_file', filepath);
-	browserify(filepath)
+	browserify(filepath, {debug: true})
 		.transform("babelify", {
 			presets: ["react"]
 		})

@@ -2,11 +2,10 @@ var fs = require('fs');
 var gulp = require('gulp');
 var browser = require('browser-sync');
 var browserify = require('browserify');
+var shell = require('child_process').execSync;
+var glob = require('glob');
 
-var entry_files = [
-	'examples/basic/app.jsx',
-	'examples/basic-external/app.jsx',
-];
+var entry_files = glob.sync('examples/**/app.jsx');
 
 gulp.task('reload', function(cb) {
 	browser.reload();
@@ -24,11 +23,21 @@ gulp.task('server', function() {
 });
 
 function bundle_file(filepath) {
+	console.log('bundle_file', filepath);
 	browserify(filepath)
 		.transform("babelify", {
 			presets: ["react"]
 		})
 		.bundle()
+		.on('error', function(err){
+	      // print the error (can replace with gulp-util)
+	      console.log(err.message);
+	      // end this stream
+	      this.emit('end');
+	      var oascript = 'display notification "'+ err.message + '" with title "Error"';
+	      var cmd = "osascript -e '" + oascript + "'";
+	      shell(cmd);
+	    })
 		.pipe(fs.createWriteStream(filepath.slice(0, -1)));
 }
 

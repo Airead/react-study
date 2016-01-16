@@ -1,9 +1,12 @@
 var fs = require('fs');
+var path = require('path');
 var gulp = require('gulp');
 var browser = require('browser-sync');
 var browserify = require('browserify');
 var shell = require('child_process').execSync;
 var glob = require('glob');
+var source = require('vinyl-source-stream');
+var async = require('async');
 
 var entry_files = glob.sync('examples/**/app.jsx');
 
@@ -13,20 +16,14 @@ gulp.task('reload', function(cb) {
 });
 
 gulp.task('server', function() {
-	browser.init({
-		server: {
-			baseDir: "examples",
-			index: ['index.html']
-		},
-		port: 8001,
-	});
+
 });
 
-function bundle_file(filepath) {
+function bundle_file(filepath, done) {
 	console.log('bundle_file', filepath);
 	browserify(filepath, {debug: true})
 		.transform("babelify", {
-			presets: ["react"]
+			presets: ["react", 'es2015']
 		})
 		.bundle()
 		.on('error', function(err){
@@ -38,19 +35,42 @@ function bundle_file(filepath) {
 	      var cmd = "osascript -e '" + oascript + "'";
 	      shell(cmd);
 	    })
-		.pipe(fs.createWriteStream(filepath.slice(0, -1)));
+	    .pipe(source(filepath.slice(0, -1)))
+	    .pipe(gulp.dest('.'))
+	    .on('end', done);
 }
 
-gulp.task('browserify', function() {
-	entry_files.forEach(function(file) {
-		bundle_file(file);
+gulp.task('bf', function(done) {
+	async.eachSeries(entry_files, function(file, cb) {
+		bundle_file(file, cb);
+	}, function(err) {
+		console.log('bf done');
+		done(err);
 	});
+	// entry_files.forEach(function(file) {
+	// 	bundle_file(file);
+	// });
 	return;
 });
 
-gulp.task('default', ['browserify', 'server'], function() {
-	gulp.watch('examples/**/app.jsx', function(file) {
-		bundle_file(file.path);
-		console.log("rebundle path", file.path);
+gulp.task('server', function() {
+	browser.init({
+		server: {
+			baseDir: "examples",
+			index: ['index.html']
+		},
+		port: 8001,
 	});
+
+	gulp.watch('examples/**/app.jsx', function(file) {
+		bundle_file(file.path, function(err) {
+			if (err) return;
+			browser.reload();
+			console.log("rebundle path", file.path);
+		});
+	});
+});
+
+gulp.task('default', ['server'], function() {
+
 });

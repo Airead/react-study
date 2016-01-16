@@ -6,6 +6,7 @@ var examples = [
 	'jquery-bootstrap',
 	'quadratic',
 	'transitions',
+	'mu-usage',
 ];
 
 var Examples = React.createClass({

@@ -1,5 +1,6 @@
 'use strict';
 import React from 'react';
+import Page from './Page';
 
 var oneLine = '一二三四五六七八九一二三四五六'.repeat(4);
 var text = [];
@@ -33,9 +34,9 @@ text = text.join('\n');
 */
 export default class ReadRealPractise extends React.Component {
     static defaultProps = {
-        pageLineNum: 12,
-        lineFontNum: 40,
-        glanceFontNum: 13,
+        pageLineNum: 10,
+        lineFontNum: 16,
+        glanceFontNum: 5,
         text: text
     };
 
@@ -104,17 +105,10 @@ export default class ReadRealPractise extends React.Component {
     }
 
     render() {
-        var lines = this.getLines();
-        var count = 0;
-        var children = lines.map(line => {
-            count++;
-            console.log('count', count);
-            return <p key={count}>{line}</p>;
-        });
+        var {pageIndex, ...other} = this.state;
+        var lines = this.pages[pageIndex];
         return (
-            <div>
-                {children}
-            </div>
+            <Page {...other} lines={lines}/>
         );
     }
 }

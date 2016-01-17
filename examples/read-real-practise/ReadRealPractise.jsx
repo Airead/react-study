@@ -7,13 +7,56 @@ for (let i = 0; i < 300; i++) {
     text.push(oneLine);
 }
 text = text.join('\n');
+/*
+    一段文字分为n页，一页分为n行，一行分为n眼跳，每次眼跳颜色随之变动，
+    如果当页结束，则开始下一页
 
+    数据设计:
+        text = {
+            index: 0,
+            pages: [
+                {
+                    index: 0,
+                    lines: [
+                        {
+                            index: 0,
+                            glaces: []
+                        }
+                    ]
+                }
+            ]
+        }
+        或
+        text = [page, page]
+        page = [line, line]
+        line = [glace, glace]
+*/
 export default class ReadRealPractise extends React.Component {
     static defaultProps = {
+        pageLineNum: 12,
         lineFontNum: 40,
         glanceFontNum: 13,
         text: text
     };
+
+    state = {
+        pageIndex: 0,
+        lineIndex: 0,
+        glaceIndex: 0,
+    };
+
+    constructor(props) {
+        super(props);
+        this.pages = [];
+        this.lines = [];
+        this.formatText();
+    }
+
+    formatText() {
+        this.lines = this.getLines();
+        var glaceLines = this.getGlaceLines(this.lines);
+        this.pages = this.getPages(glaceLines);
+    }
 
     getLines() {
         var {text, lineFontNum} = this.props;
@@ -30,6 +73,34 @@ export default class ReadRealPractise extends React.Component {
         });
 
         return lines;
+    }
+
+    getGlaceLines(lines) {
+        var {glanceFontNum} = this.props;
+        var glaceLines = [];
+        lines.forEach(function(line) {
+            var gline = [];
+            while (line.length > glanceFontNum) {
+                gline.push(line.slice(0, glanceFontNum));
+                line = line.slice(glanceFontNum);
+            }
+            if (line.length > 0) {
+                gline.push(line);
+            }
+            glaceLines.push(gline);
+        });
+
+        return glaceLines;
+    }
+
+    getPages(glaceLines) {
+        var {pageLineNum} = this.props;
+        var pages = [];
+        while (glaceLines.length > pageLineNum) {
+            pages.push(glaceLines.slice(0, pageLineNum));
+            glaceLines = glaceLines.slice(pageLineNum);
+        }
+        return pages;
     }
 
     render() {

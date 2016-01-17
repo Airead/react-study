@@ -10,6 +10,36 @@ var async = require('async');
 
 var entry_files = glob.sync('examples/**/app.jsx');
 
+function isRootDir(dirname) {
+	var rootPath = path.join(dirname, 'gulpfile.js');
+
+	try {
+		fs.statSync(rootPath);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+function getParentAppJSX(fpath) {
+	var isRun = true;
+	var dirname = path.dirname(fpath);
+	while (isRun) {
+		var appJSXPath = path.join(dirname, 'app.jsx');
+
+		if (isRootDir(dirname)) {
+			return;
+		}
+
+		try {
+			fs.statSync(appJSXPath);
+			return appJSXPath;
+		} catch (e) {
+			dirname = path.dirname(dirname);
+		}
+	}
+}
+
 gulp.task('reload', function(cb) {
 	browser.reload();
 	cb();
@@ -21,9 +51,9 @@ gulp.task('server', function() {
 
 function bundle_file(filepath, done) {
 	console.log('bundle_file', filepath);
-	browserify(filepath, {debug: true})
+	browserify(filepath, {debug: true, extensions: ['.jsx']})
 		.transform("babelify", {
-			presets: ["react", 'es2015']
+			presets: ["react", 'es2015', 'stage-1'],
 		})
 		.bundle()
 		.on('error', function(err){
@@ -62,12 +92,16 @@ gulp.task('server', function() {
 		port: 8001,
 	});
 
-	gulp.watch('examples/**/app.jsx', function(file) {
-		bundle_file(file.path, function(err) {
-			if (err) return;
-			browser.reload();
-			console.log("rebundle path", file.path);
-		});
+	gulp.watch('examples/**/*.jsx', function(file) {
+		var appJSXPath = getParentAppJSX(file.path);
+		console.log('appJSXPath', appJSXPath);
+		if (appJSXPath) {
+			bundle_file(appJSXPath, function(err) {
+				if (err) return;
+				browser.reload();
+				console.log("rebundle path", appJSXPath);
+			});
+		}
 	});
 });
 

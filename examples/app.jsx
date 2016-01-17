@@ -7,6 +7,7 @@ var examples = [
 	'quadratic',
 	'transitions',
 	'mu-usage',
+	'read-real-practise'
 ];
 
 var Examples = React.createClass({

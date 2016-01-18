@@ -3,17 +3,16 @@ import ReactDOM from 'react-dom';
 import ReadRealPractise from './ReadRealPractise';
 
 class App extends React.Component {
-	render() {
-		return (
-			<div>
-				<h1>Hello World</h1>
-				<ReadRealPractise />
-			</div>
-		);
-	}
+    render() {
+        return (
+            <div className="row column text-center">
+                <ReadRealPractise />
+            </div>
+        );
+    }
 }
 
 ReactDOM.render(
-	<App />,
-	document.getElementById('container')
+    <App />,
+    document.getElementById('container')
 );

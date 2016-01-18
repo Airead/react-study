@@ -1,10 +1,24 @@
+'use strict';
 import React from 'react';
 
+var activeClass = 'read-glance-active';
+
 export default class Page extends React.Component {
+	static propTypes: {
+		lines: React.PropTypes.array.isRequired,
+		lineIndex: React.PropTypes.number.isRequired,
+		glanceIndex: React.PropTypes.number.isRequired,
+	};
+
 	getLine(line, index) {
+		var {lineIndex, glanceIndex} = this.props;
 		var glances = line.map((glance, i) => {
+			var className = '';
+			if (lineIndex === index && glanceIndex === i) {
+				className += activeClass;
+			}
 			return (
-				<span key={i}>{glance}</span>
+				<span key={i} className={className}>{glance}</span>
 			);
 		});
 		return (

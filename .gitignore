@@ -5,3 +5,5 @@ npm-debug.log
 compile.sh
 app.css
 app.js
+app-min.js
+dist

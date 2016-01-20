@@ -7,6 +7,10 @@ var shell = require('child_process').execSync;
 var glob = require('glob');
 var source = require('vinyl-source-stream');
 var async = require('async');
+var minify = require('gulp-minify');
+var rename = require('gulp-rename');
+var del = require('del');
+var runSequence = require('gulp-run-sequence');
 
 var entry_files = glob.sync('examples/**/app.jsx');
 
@@ -51,7 +55,7 @@ gulp.task('server', function() {
 
 function bundle_file(filepath, done) {
 	console.log('bundle_file', filepath);
-	browserify(filepath, {debug: true, extensions: ['.jsx']})
+	browserify(filepath, {debug: false, extensions: ['.jsx']})
 		.transform("babelify", {
 			presets: ["react", 'es2015', 'stage-1'],
 		})
@@ -81,6 +85,29 @@ gulp.task('bf', function(done) {
 	// 	bundle_file(file);
 	// });
 	return;
+});
+
+gulp.task('compress', function(done) {
+  gulp.src('examples/**/app.js')
+    .pipe(minify())
+    .pipe(gulp.dest('examples'))
+    .on('end', done);
+});
+
+gulp.task('copy-to-dist', function() {
+	gulp.src("examples/**/*.css").pipe(gulp.dest("dist/"));
+	gulp.src("examples/**/*.html").pipe(gulp.dest("dist/"));
+	gulp.src("examples/**/app-min.js")
+		.pipe(rename({basename: "app"}))
+		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('clean', function() {
+	del.sync('dist');
+});
+
+gulp.task('production', function(done) {
+	runSequence('clean', 'compress', 'copy-to-dist', done);
 });
 
 gulp.task('server', function() {

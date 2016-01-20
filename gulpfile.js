@@ -107,7 +107,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('production', function(done) {
-	runSequence('clean', 'compress', 'copy-to-dist', done);
+	runSequence('clean', 'bf', 'compress', 'copy-to-dist', done);
 });
 
 gulp.task('server', function() {

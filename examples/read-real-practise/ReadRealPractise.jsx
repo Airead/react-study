@@ -37,7 +37,7 @@ text = text.join('\n');
 export default class ReadRealPractise extends React.Component {
     static defaultProps = {
         width: '50em',
-        pageLineNum: 13,
+        pageLineNum: 23,
         lineFontNum: 39,
         glanceFontNum: 13,
         delay: 333,

@@ -1,8 +1,16 @@
 .read-page-container {
 	display: inline-block;
 	text-align: left;
+	font-family: SimSun, "宋体";
+	font-weight: bold;
+	color: #8EA9FF;
+}
+
+.read-page-container p {
+	margin: 0;
+	padding: 0;
 }
 
 .read-glance-active {
-	color: red;
+	color: #000;
 }

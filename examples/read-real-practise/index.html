@@ -7,37 +7,42 @@
     <link rel="stylesheet" href="/libcss/foundation.css">
     <link rel="stylesheet" href="style.css">
     <!-- // <script src="http://10.10.17.16:8888/target/target-script-min.js#anonymous"></script> -->
-    <title>basic</title>
+    <title>快速阅读训练</title>
 </head>
 
 <body>
     <div id="container">
-    	<h1>not support</h1>
+        <h1>not support</h1>
+    </div>
+    <div class="audio" style="display: none">
+        <audio controls="controls" loop="loop" autoplay>
+            <source src="/libmp3/yinqie.mp3" type="audio/mpeg" /> Your browser does not support the audio element.
+        </audio>
     </div>
     <script>
-	if (typeof Object.assign != 'function') {
-	  (function () {
-	    Object.assign = function (target) {
-	      'use strict';
-	      if (target === undefined || target === null) {
-	        throw new TypeError('Cannot convert undefined or null to object');
-	      }
+    if (typeof Object.assign != 'function') {
+        (function() {
+            Object.assign = function(target) {
+                'use strict';
+                if (target === undefined || target === null) {
+                    throw new TypeError('Cannot convert undefined or null to object');
+                }
 
-	      var output = Object(target);
-	      for (var index = 1; index < arguments.length; index++) {
-	        var source = arguments[index];
-	        if (source !== undefined && source !== null) {
-	          for (var nextKey in source) {
-	            if (source.hasOwnProperty(nextKey)) {
-	              output[nextKey] = source[nextKey];
-	            }
-	          }
-	        }
-	      }
-	      return output;
-	    };
-	  })();
-	}
+                var output = Object(target);
+                for (var index = 1; index < arguments.length; index++) {
+                    var source = arguments[index];
+                    if (source !== undefined && source !== null) {
+                        for (var nextKey in source) {
+                            if (source.hasOwnProperty(nextKey)) {
+                                output[nextKey] = source[nextKey];
+                            }
+                        }
+                    }
+                }
+                return output;
+            };
+        })();
+    }
     </script>
     <script src="app.js"></script>
 </body>

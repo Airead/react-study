@@ -90,11 +90,18 @@ export default class ReadRealPractise extends React.Component {
         return Object.assign({}, this.props, query);
     }
 
+    setPage() {
+        var {pageIndex} = this.getProps();
+        if (pageIndex) this.state.pageIndex = parseInt(pageIndex);
+    }
+
     formatText(text) {
+        this.setPage();
         this.lines = this.getLines(text);
         var glanceLines = this.getGlanceLines(this.lines);
         this.pages = this.getPages(glanceLines);
         console.log('pages', this.pages);
+
     }
 
     splitArray(arr, maxNum) {
@@ -194,8 +201,13 @@ export default class ReadRealPractise extends React.Component {
         var {width} = this.getProps();
         var {pageIndex, ...other} = this.state;
         var lines = this.pages[pageIndex] || [];
+        var style = {
+            float: 'left',
+            'margin-left': '-200px'
+        };
         return (
             <div className="read-page-container" onClick={this.onClick.bind(this)}>
+                <span style={style}>{this.state.pageIndex}/{this.pages.length}</span>
                 <Page {...other} lines={lines}/>
             </div>
         );

@@ -40,7 +40,7 @@ export default class ReadRealPractise extends React.Component {
         pageLineNum: 23,
         lineFontNum: 39,
         glanceFontNum: 13,
-        delay: 333,
+        delay: 300,
         textSrc: null,
         text: text
     };
@@ -93,6 +93,12 @@ export default class ReadRealPractise extends React.Component {
     setPage() {
         var {pageIndex} = this.getProps();
         if (pageIndex) this.state.pageIndex = parseInt(pageIndex);
+    }
+
+    updatePage(pageIndex) {
+        var query = qs.parse(location.hash.split('?')[1] || '');
+        query.pageIndex = pageIndex;
+        location.hash = '?' + qs.stringify(query);
     }
 
     formatText(text) {
@@ -185,6 +191,9 @@ export default class ReadRealPractise extends React.Component {
         var state = {};
         [state.pageIndex, state.lineIndex, state.glanceIndex] = curStates;
         console.log('state', this.state);
+        if (this.state.pageIndex != state.pageIndex) {
+            this.updatePage(state.pageIndex);
+        }
         this.setState(state);
     }
 

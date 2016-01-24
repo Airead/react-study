@@ -97,6 +97,8 @@ gulp.task('compress', function(done) {
 gulp.task('copy-to-dist', function() {
 	gulp.src("examples/**/*.css").pipe(gulp.dest("dist/"));
 	gulp.src("examples/**/*.html").pipe(gulp.dest("dist/"));
+	gulp.src("examples/**/*.js").pipe(gulp.dest("dist/"));
+	gulp.src("examples/**/*.mp3").pipe(gulp.dest("dist/"));
 	gulp.src("examples/**/app-min.js")
 		.pipe(rename({basename: "app"}))
 		.pipe(gulp.dest('dist'));

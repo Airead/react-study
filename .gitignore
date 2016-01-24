@@ -9,3 +9,4 @@ app-min.js
 dist
 *~
 libtxt
+*.sublime-workspace

@@ -1,3 +1,4 @@
+'use strict';
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -7,7 +8,8 @@ var examples = [
 	'quadratic',
 	'transitions',
 	'mu-usage',
-	'read-real-practise'
+	'read-real-practise',
+	'words1368',
 ];
 
 var Examples = React.createClass({
@@ -16,7 +18,7 @@ var Examples = React.createClass({
 		return (
 			<div className="row small-up-2 medium-up-3 large-up-5">
 			{this.props.examples.map(function(example) {
-				return <div key={example} className="column"><a href={example}>{example}</a></div>
+				return <div key={example} className="column"><a href={example}>{example}</a></div>;
 			})}
 			</div>
 		);

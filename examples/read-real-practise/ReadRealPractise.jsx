@@ -59,17 +59,17 @@ export default class ReadRealPractise extends React.Component {
         this.pages = [];
         this.lines = [];
         var {textSrc} = this.getProps();
+        if (!textSrc) textSrc = '/libtxt/1.txt';
 
         if (textSrc) {
-            this.getText();
+            this.getText(textSrc);
         } else {
             this.formatText(this.props.text);
         }
     }
 
-    getText() {
+    getText(textSrc) {
         var self = this;
-        var {textSrc} = this.getProps();
         console.log('get text from', textSrc);
         request
             .get(textSrc)
@@ -204,7 +204,7 @@ export default class ReadRealPractise extends React.Component {
         if (this.state.pageIndex != state.pageIndex) {
             this.updatePage(state.pageIndex);
             state.glanceIndex = -1;
-            this.updatePageDelay(700);
+            this.updatePageDelay(300);
         }
         this.setState(state);
     }

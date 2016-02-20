@@ -47,6 +47,7 @@ export default class ReadRealPractise extends React.Component {
 
     interval = null;
     _text = '';
+    lastTick = 0;
 
     state = {
         pageIndex: 0,
@@ -78,7 +79,7 @@ export default class ReadRealPractise extends React.Component {
                     console.log('request error', textSrc, err);
                     return;
                 }
-                console.log('get text', res.text);
+                // console.log('get text', res.text);
                 self._text = res.text;
                 self.formatText(res.text);
                 self.forceUpdate();
@@ -114,7 +115,7 @@ export default class ReadRealPractise extends React.Component {
         this.lines = this.getLines(text);
         var glanceLines = this.getGlanceLines(this.lines);
         this.pages = this.getPages(glanceLines);
-        console.log('pages', this.pages);
+        // console.log('pages', this.pages);
 
     }
 

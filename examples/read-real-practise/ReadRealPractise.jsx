@@ -101,6 +101,14 @@ export default class ReadRealPractise extends React.Component {
         location.hash = '?' + qs.stringify(query);
     }
 
+    updatePageDelay(delay) {
+        self = this;
+        this.stopTick();
+        setTimeout(function() {
+            self.startTick();
+        }, delay);
+    }
+
     formatText(text) {
         this.setPage();
         this.lines = this.getLines(text);
@@ -156,6 +164,7 @@ export default class ReadRealPractise extends React.Component {
     }
 
     startTick() {
+        console.log('start tick')
         if (this.interval) return;
         var {delay} = this.getProps();
         this.interval = setInterval(() => {
@@ -164,6 +173,7 @@ export default class ReadRealPractise extends React.Component {
     }
 
     stopTick() {
+        console.log('stop tick');
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -190,20 +200,26 @@ export default class ReadRealPractise extends React.Component {
         }
         var state = {};
         [state.pageIndex, state.lineIndex, state.glanceIndex] = curStates;
-        console.log('state', this.state);
+        // console.log('state', this.state);
         if (this.state.pageIndex != state.pageIndex) {
             this.updatePage(state.pageIndex);
+            state.glanceIndex = -1;
+            this.updatePageDelay(700);
         }
         this.setState(state);
     }
 
     onClick(e) {
-        console.log('on click', e);
+        // console.log('on click', e);
         if (this.interval) {
             this.stopTick();
         } else {
             this.startTick();
         }
+    }
+
+    onKeyUp(e) {
+        console.log('keyUp', e);
     }
 
     render() {
@@ -212,14 +228,13 @@ export default class ReadRealPractise extends React.Component {
         var lines = this.pages[pageIndex] || [];
         var style = {
             float: 'left',
-            'margin-left': '-200px'
+            'marginLeft': '-200px'
         };
         return (
-            <div className="read-page-container" onClick={this.onClick.bind(this)}>
-                <span style={style}>{this.state.pageIndex}/{this.pages.length}</span>
+            <div className="read-page-container" onClick={this.onClick.bind(this)} >
+                <span onKeyUp={this.onKeyUp.bind(this)} style={style}>{this.state.pageIndex}/{this.pages.length}</span>
                 <Page {...other} lines={lines}/>
             </div>
         );
     }
 }
-

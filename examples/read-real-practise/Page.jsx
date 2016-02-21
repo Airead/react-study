@@ -2,6 +2,7 @@
 import React from 'react';
 
 var activeClass = 'read-glance-active';
+var noActiveClass = 'read-glance-no-active';
 
 export default class Page extends React.Component {
 	static propTypes: {
@@ -16,7 +17,9 @@ export default class Page extends React.Component {
 			var className = '';
 			if (lineIndex === index && glanceIndex === i) {
 				className += activeClass;
-			}
+			} else {
+                className += noActiveClass;
+            }
 			return (
 				<span key={i} className={className}>{glance}</span>
 			);

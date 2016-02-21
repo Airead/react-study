@@ -14,3 +14,7 @@
 .read-glance-active {
 	color: #000;
 }
+
+.read-glance-no-active {
+    color: rgba(142, 169, 255, 0.25);
+}

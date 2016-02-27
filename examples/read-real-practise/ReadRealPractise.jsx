@@ -3,6 +3,7 @@ import React from 'react';
 import Page from './Page';
 import qs from 'querystring';
 import request from 'superagent';
+import lodash from 'lodash';
 
 var oneLine = '一二三四，五六七八九一二，三四五六'.repeat(4);
 var text = [];
@@ -42,7 +43,8 @@ export default class ReadRealPractise extends React.Component {
         glanceFontNum: 13,
         delay: 300,
         textSrc: null,
-        text: text
+        text: text,
+        isShuffle: '1',
     };
 
     interval = null;
@@ -111,12 +113,44 @@ export default class ReadRealPractise extends React.Component {
     }
 
     formatText(text) {
+        var {isShuffle} = this.getProps();
         this.setPage();
         this.lines = this.getLines(text);
         var glanceLines = this.getGlanceLines(this.lines);
         this.pages = this.getPages(glanceLines);
+        if (isShuffle === '1') {
+            this.shullfeGlance(this.pages);
+        }
         // console.log('pages', this.pages);
 
+    }
+
+    shullfeGlance(pages) {
+        var self = this;
+        pages.forEach((lines) => {
+            lines.forEach((glances) => {
+                for (let i = 0; i < glances.length; i++) {
+                    glances[i] = self.shuffle(glances[i].split('')).join('');
+                }
+            });
+        });
+    }
+
+    /**
+     * Shuffles array in place.
+     * @param {Array} a items The array containing the items.
+     * @return {Array} a The shuffled array
+     */
+    shuffle(a) {
+        var j, x, i;
+        for (i = a.length; i; i -= 1) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
+
+        return a;
     }
 
     splitArray(arr, maxNum) {
@@ -165,7 +199,7 @@ export default class ReadRealPractise extends React.Component {
     }
 
     startTick() {
-        console.log('start tick')
+        console.log('start tick');
         if (this.interval) return;
         var {delay} = this.getProps();
         this.interval = setInterval(() => {

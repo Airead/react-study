@@ -10,6 +10,7 @@ var examples = [
 	'mu-usage',
 	'read-real-practise',
 	'words1368',
+    'word-think',
 ];
 
 var Examples = React.createClass({

@@ -55,7 +55,7 @@ gulp.task('server', function() {
 
 function bundle_file(filepath, done) {
 	console.log('bundle_file', filepath);
-	browserify(filepath, {debug: false, extensions: ['.jsx']})
+	browserify(filepath, {debug: true, extensions: ['.jsx']})
 		.transform("babelify", {
 			presets: ["react", 'es2015', 'stage-1'],
 		})

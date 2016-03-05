@@ -47,7 +47,7 @@ export default class WordThink extends React.Component {
         };
 
         var fontStyle = {
-            color: 'white',
+            color: '#DADADA',
             fontSize: '100px',
         };
         return (

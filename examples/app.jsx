@@ -9,6 +9,7 @@ var examples = [
 	'transitions',
 	'mu-usage',
 	'read-real-practise',
+    'xin-xiang-practise',
 	'words1368',
     'word-think',
 ];

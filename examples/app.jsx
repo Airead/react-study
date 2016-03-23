@@ -12,6 +12,7 @@ var examples = [
     'xin-xiang-practise',
 	'words1368',
     'word-think',
+    'test-react-router',
 ];
 
 var Examples = React.createClass({
